@@ -1,6 +1,6 @@
 var is_BottkusMaximusRunning = false;
 
-var html = '<div><select id="bottikus_maximus_selectedBar"><option value="bronzeBar">Bronze</option><option value="goldBar">Gold</option><option value="ironBar">Iron</option><option value="silverBar">Silber</option><option value="glass">Glass</option><option value="goldBar">GoldBar</option></select><br/><input type="number" id="bottikus_maximus_ammount" placeholder="Ammount per iteration..."></input><br/><button onclick="is_BottkusMaximusRunning = true;">Start Bot</button><button onclick="is_BottkusMaximusRunning = false;">Stop Bot</button></div>';
+var html = '<div><select id="bottikus_maximus_selectedBar"><option value="bronzeBar">Bronze</option><option value="goldBar">Gold</option><option value="ironBar">Iron</option><option value="silverBar">Silber</option><option value="glass">Glass</option><option value="goldBar">GoldBar</option></select><br/><input type="number" id="bottikus_maximus_ammount" placeholder="Ammount per iteration..."></input><br/><label><input type="checkbox" id="bottikus_maximus_isAutoSell">Auto sell selected items</label><br/><button onclick="is_BottkusMaximusRunning = true;">Start Bot</button><button onclick="is_BottkusMaximusRunning = false;">Stop Bot</button></div>';
 $("#tab-sub-container-crafting").append(html);
 
 setInterval(function() {
@@ -16,6 +16,12 @@ setInterval(function() {
 			setTimeout(function(){
 				$('#dialogue-furnace-mats-needed-area > input[type="button"]').click();
 			}, 1000);
+			
+			//auto selling
+			if ($("#bottikus_maximus_isAutoSell")[0].checked) {
+				openSellNPCDialogue($("#bottikus_maximus_selectedBar").val());
+				$('#dialogue-sell-item > input[type="button"]:nth-child(5)').click();
+			}
 		}
 	}
 }, 4000);
