@@ -34,7 +34,7 @@ function bottikus_maximus_checkPatch(patch) {
 
 function bottikus_maximus_smelt() {
 	if (smeltingAmount == 0 && smeltingBarType == 0 && !$("#notif-smelting").is(":visible")) {
-		openFurnaceDialogue('boundBronzeFurnace');
+		openFurnaceDialogue(bottikus_maximus_getFurnace());
 
 		//set selection
 		selectedBar = $("#bottikus_maximus_selectedBar").val();
@@ -50,6 +50,15 @@ function bottikus_maximus_smelt() {
 			openSellNPCDialogue($("#bottikus_maximus_selectedBar").val());
 			$('#dialogue-sell-item > input[type="button"]:nth-child(5)').click();
 		}
+	}
+}
+
+function bottikus_maximus_getFurnace() {
+	var availableFurnaces = ["boundStoneFurnace", "boundBronzeFurnace", "boundIronFurnace", "boundSilverFurnace", "boundGoldFurnace", "boundPromethiumFurnace"];
+	for (var i = 1; i <= availableFurnaces.length; i++) {
+	    if (window[availableFurnaces[i]] == 1) {
+	    	return(availableFurnaces[i]);
+	    }
 	}
 }
 
