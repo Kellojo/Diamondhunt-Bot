@@ -1,11 +1,15 @@
 var is_BottkusMaximusSmelting = false;
 var is_BottkusMaximusFarming = false;
+var is_BottkusMaximusDrinkingPotions = false;
 
 var html = '<div><select id="bottikus_maximus_selectedBar"><option value="bronzeBar">Bronze</option><option value="goldBar">Gold</option><option value="ironBar">Iron</option><option value="silverBar">Silber</option><option value="glass">Glass</option><option value="goldBar">GoldBar</option></select><br/><input type="number" id="bottikus_maximus_ammount" placeholder="Ammount per iteration..."></input><br/><label><input type="checkbox" id="bottikus_maximus_isAutoSell">Auto sell selected items</label><br/><button onclick="is_BottkusMaximusSmelting = true;">Start Bot</button><button onclick="is_BottkusMaximusSmelting = false;">Stop Bot</button></div>';
 $("#tab-sub-container-crafting").append(html);
 
 var html = '<div><select id="bottikus_maximus_selectedSeed"><option value="redMushroomSeeds">Mushroom Seeds (red)</option><option value="blewitMushroomSeeds">Mushroom Seeds (blue - blewit)</option><option value="snapegrassSeeds">Snape Grass Seeds</option><option value="greenLeafSeeds">Green Leaf Seeds</option><option value="dottedGreenLeafSeeds">Dotted Green Leaf Seeds</option><option value="limeLeafSeeds">Lime Leaf Seeds</option><option value="goldLeafSeeds">Gold Leaf Seeds</option><option value="crystalLeafSeeds">Crystal Leaf Seeds</option><option value="stripedCrystalLeafSeeds">Striped Crystal Leaf Seeds</option><option value="treeSeeds">Tree Seeds</option><option value="oakTreeSeeds">Oak Tree Seeds</option><option value="willowTreeSeeds">WillowT ree Seeds</option><option value="mapleTreeSeeds">Maple Tree Seeds</option><option value="stardustTreeSeeds">Sardust Tree Seeds</option><option value="essenceTreeSeeds">Essence Tree Seeds</option></select><br/><br/><input type="number" id="bottikus_maximus_patchAmmount" value="0" placeholder="Number of Patches you own"></input><br/><button onclick="is_BottkusMaximusFarming = true;">Start Farming</button><button onclick="is_BottkusMaximusFarming = false;">Stop Farming</button></div>';
 $("#tab-sub-container-farming").append(html);
+
+var html = '<div><select id="bottikus_maximus_selectedPotion"><option value="stardustPotion">Stardust Potion</option></select><br/><br/><button onclick="is_BottkusMaximusDrinkingPotions = true;">Start Using</button><button onclick="is_BottkusMaximusDrinkingPotions = false;">Stop Using</button></div>';
+$("#tab-sub-container-brewing").append(html);
 
 
 function bottikus_maximus_runfarm() {
@@ -49,6 +53,15 @@ function bottikus_maximus_smelt() {
 	}
 }
 
+function bottikus_maximus_drinkPotions() {
+	//drink potion if the player has more than one and he itn't using a potion at the moment
+	if (window[$("#bottikus_maximus_selectedPotion").val() + "Timer"] == 0 && window[$("#bottikus_maximus_selectedPotion").val()] > 0) {
+		clicksPotion($("#bottikus_maximus_selectedPotion").val());
+		setTimeout(function(){
+			$("#dialogue-confirm-yes").click();
+		}, 1000);
+	}
+}
 
 
 setInterval(function() {
@@ -58,5 +71,7 @@ setInterval(function() {
 	if (is_BottkusMaximusFarming) {
 		bottikus_maximus_runfarm();
 	}
+	if (is_BottkusMaximusDrinkingPotions) {
+		bottikus_maximus_drinkPotions();
+	}
 }, 4000);
-
