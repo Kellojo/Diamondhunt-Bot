@@ -1,6 +1,7 @@
 var is_BottkusMaximusSmelting = false;
 var is_BottkusMaximusFarming = false;
 var is_BottkusMaximusDrinkingPotions = false;
+var is_BottkusMaximusAutoCombat = false;
 
 var html = '<div><select id="bottikus_maximus_selectedBar"><option value="bronzeBar">Bronze</option><option value="goldBar">Gold</option><option value="ironBar">Iron</option><option value="silverBar">Silber</option><option value="glass">Glass</option></select><br/><input type="number" id="bottikus_maximus_ammount" placeholder="Ammount per iteration..."></input><br/><label><input type="checkbox" id="bottikus_maximus_isAutoSell">Auto sell selected items</label><br/><button onclick="is_BottkusMaximusSmelting = true;">Start Bot</button><button onclick="is_BottkusMaximusSmelting = false;">Stop Bot</button></div>';
 $("#tab-sub-container-crafting").append(html);
@@ -10,6 +11,9 @@ $("#tab-sub-container-farming").append(html);
 
 var html = '<div><select id="bottikus_maximus_selectedPotion"><option value="stardustPotion">Stardust Potion</option></select><br/><button onclick="is_BottkusMaximusDrinkingPotions = true;">Start Using</button><button onclick="is_BottkusMaximusDrinkingPotions = false;">Stop Using</button></div>';
 $("#tab-sub-container-brewing").append(html);
+
+var html = '<div><select id="bottikus_maximus_combatArea"><option value="fields">Fields</option><option value="forests">Forests</option><option value="caves">Caves</option><option value="volcano">Volcano</option><option value="northFields">North Fields</option><option value="hauntedMansion">Haunted Mansion</option></select><br/><input type="number" id="bottikus_maximus_minEnergyAmmount" placeholder="Stop at energy level ..."></input><br/><button onclick="is_BottkusMaximusAutoCombat = true;">Start</button><button onclick="is_BottkusMaximusAutoCombat = false;">Stop</button></div>';
+$("#tab-sub-container-combat").append(html);
 
 
 function bottikus_maximus_runfarm() {
@@ -75,6 +79,20 @@ function bottikus_maximus_drinkPotions() {
 	}
 }
 
+function bottikus_maximus_combat() {
+	//drink potion if the player has more than one and he itn't using a potion at the moment
+	if ($("#fight-cooldown").text() == "Ready" && !isInCombat() && energy > $("#bottikus_maximus_minEnergyAmmount").val()) {
+		openFightMenu();
+		setTimeout(function(){
+			selectFightingArea(this, $("#bottikus_maximus_combatArea").val());
+			setTimeout(function(){
+				$("#dialogue-confirm-yes").click();
+				$("#body > div:nth-child(86)").hide();
+			}, 1000);
+		}, 1000);
+	}
+}
+
 
 setInterval(function() {
 	if (is_BottkusMaximusSmelting) {
@@ -85,5 +103,8 @@ setInterval(function() {
 	}
 	if (is_BottkusMaximusDrinkingPotions) {
 		bottikus_maximus_drinkPotions();
+	}
+	if (is_BottkusMaximusAutoCombat) {
+		bottikus_maximus_combat();
 	}
 }, 4000);
